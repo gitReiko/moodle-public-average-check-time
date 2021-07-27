@@ -14,13 +14,11 @@ class DataGetter
     {
         $this->rawGrades = $this->get_raw_grades();
         $this->teachers = $this->parse_raw_grades();
-
-        print_r($this->teachers);
     }
 
-    public function display_report_page() : void 
+    public function get_teachers()
     {
-        echo 'in class';
+        return $this->teachers;
     }
 
     private function get_raw_grades() 
