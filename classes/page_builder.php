@@ -79,7 +79,8 @@ class PageBuilder
         $attr = array(
             'id' => self::TEACHER_ID.$teacherNumber,
             'class' => 'teacher-row',
-            'onclick' => 'toggle_courses_rows_visibility(this)'
+            'onclick' => 'toggle_courses_rows_visibility(this)',
+            'title' => get_string('more_info_title', 'report_averagechecktime')
         );
         $str = \html_writer::start_tag('tr', $attr);
 
@@ -120,7 +121,8 @@ class PageBuilder
             'id' => self::TEACHER_ID.$teacherNumber.self::COURSE_ID.$courseNumber,
             'data-teacher-number' => self::TEACHER_ID.$teacherNumber,
             'class' => 'course-row hidden',
-            'onclick' => 'toggle_items_rows_visibility(this)'
+            'onclick' => 'toggle_items_rows_visibility(this)',
+            'title' => get_string('more_info_title', 'report_averagechecktime')
         );
         $str = \html_writer::start_tag('tr', $attr);
 

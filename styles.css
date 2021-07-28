@@ -26,23 +26,30 @@ table.averageTable thead tr td
 
 table.averageTable tbody tr td
 {
-    cursor: pointer;
     vertical-align: top;
 } 
+
+table.averageTable tbody tr:hover 
+{
+    background: #c9e7b0;
+}
 
 .teacher-row
 {
     background: #f6e1a9; 
+    cursor: pointer;
 }
 
 .course-row
 {
     background: #f8d3ba;
+    cursor: pointer;
 }
 
 .item-row
 {
     background: #ebeea4;
+    cursor: default;
 }
 
 .tar

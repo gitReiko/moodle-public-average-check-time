@@ -9,3 +9,5 @@ $string['seconds'] = 'сек.';
 $string['teacher'] = 'Преподаватель';
 $string['average_check_time'] = 'Среднее время проверки';
 $string['average_grade'] = 'Средняя оценка';
+$string['more_info_title'] = 'Нажмите, чтобы увидеть больше информации';
+
