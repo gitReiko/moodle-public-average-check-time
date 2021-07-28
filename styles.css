@@ -2,7 +2,31 @@
 .reportHeader
 {
     cursor: default;
-    padding-bottom: 15px;
+    padding-bottom: 10px;
+}
+
+div.warningArea
+{
+    margin-bottom: 20px;
+    padding: 5px;
+    border: 1px solid black;
+    background: #FFF68F;
+}
+
+p#warningToggle
+{
+    cursor: pointer;
+    margin-bottom: 0px;
+}
+
+div#warningBox
+{
+    padding-top: 5px;
+}
+
+div#warningBox p 
+{
+    font-style: italic;
 }
 
 table.averageTable

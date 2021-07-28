@@ -21,6 +21,7 @@ class PageBuilder
     public function get_page() : string
     {
         $page = $this->get_page_header();
+        $page.= $this->get_warning();
         $page.= $this->get_teachers_table();
         $page.= $this->get_sort_forms();
 
@@ -32,6 +33,43 @@ class PageBuilder
         $attr = array('class' => 'reportHeader');
         $text = get_string('pluginname', 'report_averagechecktime');
         return \html_writer::tag('h2', $text, $attr);
+    }
+
+    private function get_warning() : string 
+    {
+        $str = $this->get_warning_toggle();
+        $str.= $this->get_warning_box();
+
+        $attr = array('class' => 'warningArea');
+        $str = \html_writer::tag('div', $str, $attr);
+
+        return $str;
+    }
+
+    private function get_warning_toggle() : string 
+    {
+        $attr = array(
+            'id' => 'warningToggle',
+            'onclick' => 'toggle_warning()'
+        );
+        $text = get_string('warning_toggle', 'report_averagechecktime');
+        
+        return \html_writer::tag('p', $text, $attr);
+    }
+
+    private function get_warning_box() : string 
+    {
+        $text = get_string('known_distortions', 'report_averagechecktime');
+        $str = \html_writer::tag('p', $text);
+
+
+
+
+        $attr = array(
+            'id' => 'warningBox',
+            'class' => 'hidden'
+        );
+        return \html_writer::tag('div', $str, $attr);
     }
 
     private function get_teachers_table() : string 

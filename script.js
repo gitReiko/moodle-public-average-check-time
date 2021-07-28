@@ -1,4 +1,17 @@
 
+function submit_form(id)
+{
+    document.getElementById(id).submit();
+}
+
+function toggle_warning()
+{
+    require(['jquery'], function($)
+    {
+        $("#warningBox").toggleClass('hidden');
+    });
+}
+
 function toggle_courses_rows_visibility(row)
 {
     require(['jquery'], function($)
@@ -16,8 +29,4 @@ function toggle_items_rows_visibility(row)
     });
 }
 
-function submit_form(id)
-{
-    document.getElementById(id).submit();
-}
 
