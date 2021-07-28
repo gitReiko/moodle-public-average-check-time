@@ -4,6 +4,7 @@ function toggle_courses_rows_visibility(row)
     require(['jquery'], function($)
     {
         $("[data-teacher-number="+row.id+"]").toggleClass('hidden');
+        $("[data-teacher-number-of-item="+row.id+"]").toggleClass('hidden', true);
     });
 }
 

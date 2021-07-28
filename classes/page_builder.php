@@ -160,6 +160,7 @@ class PageBuilder
     {
         $attr = array(
             'data-course-number' => self::TEACHER_ID.$teacherNumber.self::COURSE_ID.$courseNumber,
+            'data-teacher-number-of-item' => self::TEACHER_ID.$teacherNumber,
             'class' => 'item-row hidden'
         );
         $str = \html_writer::start_tag('tr', $attr);
