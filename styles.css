@@ -1,0 +1,70 @@
+
+.reportHeader
+{
+    cursor: default;
+}
+
+table.averageTable
+{
+    width: 100%;
+    margin: auto;
+    border-collapse: collapse;
+}
+
+table.averageTable tr td 
+{
+    border: 1px solid black;
+    padding: 5px;
+}
+
+table.averageTable thead tr td
+{
+    cursor: default;
+    text-align: center;
+    background: #f6e1a9;
+}
+
+table.averageTable tbody tr td
+{
+    cursor: pointer;
+    vertical-align: top;
+} 
+
+.teacher-row
+{
+    background: #f8d3ba;
+}
+
+.course-row
+{
+    background: #f6e1a9;
+}
+
+.item-row
+{
+    background: #ebeea4;
+}
+
+.tar
+{
+    text-align: right;
+}
+
+.tac 
+{
+    text-align: center;
+}
+
+.hidden 
+{
+    display: none;
+}
+
+
+
+
+
+
+
+
+

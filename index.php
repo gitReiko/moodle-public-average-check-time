@@ -13,8 +13,8 @@ $PAGE->set_context(context_system::instance());
 $PAGE->set_pagelayout('standard');
 $PAGE->set_title(get_string('pluginname', 'report_averagechecktime'));
 $PAGE->set_heading(get_string('pluginname', 'report_averagechecktime'));
-//$PAGE->requires->css('/report/averagechecktime/styles.css');
-//$PAGE->requires->js('/report/averagechecktime/script.js');
+$PAGE->requires->css('/report/averagechecktime/styles.css');
+$PAGE->requires->js('/report/averagechecktime/script.js');
 
 require_login();
   
@@ -38,5 +38,6 @@ echo $OUTPUT->footer();
 2. работы, которые проверил другой преподаватель
 3. небольшое количество работ проверенных очень поздно могут вносить значительные искажения
 4. перепроверенные позже работы будут вносить искажения
+5. подсёт времени в нестандартных модулях может вестись некорректно
 
 */

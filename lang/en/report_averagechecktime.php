@@ -6,4 +6,7 @@ $string['days'] = 'd.';
 $string['hours'] = 'h.';
 $string['minutes'] = 'min.';
 $string['seconds'] = 's.';
+$string['teacher'] = 'Teacher';
+$string['average_check_time'] = 'Average check time';
+$string['average_grade'] = 'Average grade';
 

@@ -6,4 +6,6 @@ $string['days'] = 'дн.';
 $string['hours'] = 'ч.';
 $string['minutes'] = 'мин.';
 $string['seconds'] = 'сек.';
-
+$string['teacher'] = 'Преподаватель';
+$string['average_check_time'] = 'Среднее время проверки';
+$string['average_grade'] = 'Средняя оценка';
