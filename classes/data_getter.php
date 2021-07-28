@@ -6,6 +6,9 @@ ini_set('memory_limit', '1024M');
 
 class DataGetter 
 {
+    const DAY = 86400;
+    const HOUR = 3600;
+    const MINUTE = 60;
 
     private $rawGrades;
     private $teachers;
@@ -14,6 +17,8 @@ class DataGetter
     {
         $this->rawGrades = $this->get_raw_grades();
         $this->teachers = $this->parse_raw_grades();
+        $this->teachers = $this->calculate_averages($this->teachers);
+        $this->teachers = $this->convert_time_into_convenient_format($this->teachers);
     }
 
     public function get_teachers()
@@ -86,6 +91,9 @@ class DataGetter
         $newTeacher = new \stdClass;
         $newTeacher->id = $rawGrade->teacherid;
         $newTeacher->name = $rawGrade->teacherlastname.' '.$rawGrade->teacherfirstname;
+        $newTeacher->averageTime = 0;
+        $newTeacher->averageGrade = 0;
+        $newTeacher->gradesCount = 0;
 
         $newTeacher->courses = array();
         $newTeacher->courses = $this->add_course($newTeacher->courses, $rawGrade);
@@ -100,6 +108,9 @@ class DataGetter
         $newCourse = new \stdClass;
         $newCourse->id = $rawGrade->courseid;
         $newCourse->name = $rawGrade->coursename;
+        $newCourse->averageTime = 0;
+        $newCourse->averageGrade = 0;
+        $newCourse->gradesCount = 0;
 
         $newCourse->items = array();
         $newCourse->items = $this->add_item($newCourse->items, $rawGrade);
@@ -115,6 +126,9 @@ class DataGetter
         $newItem->id = $rawGrade->itemid;
         $newItem->name = $rawGrade->itemname;
         $newItem->module = $rawGrade->itemmodule;
+        $newItem->averageTime = 0;
+        $newItem->averageGrade = 0;
+        $newItem->gradesCount = 0;
 
         $newItem->students = array();
         $newItem->students = $this->add_student($newItem->students, $rawGrade);
@@ -216,6 +230,124 @@ class DataGetter
         }
 
         return $items;
+    }
+
+    private function calculate_averages(array $teachers)
+    {
+        $teacher = $this->sum_all_values($teachers);
+        $teacher = $this->find_average_values($teachers);
+
+        return $teachers;
+    }
+
+    private function sum_all_values(array $teachers)
+    {
+        foreach($teachers as $teacher)
+        {
+            foreach($teacher->courses as $course)
+            {
+                foreach($course->items as $item)
+                {
+                    foreach($item->students as $student)
+                    {
+                        $item->averageTime += $student->checktime;
+                        $item->averageGrade += $student->grade;
+                        $item->gradesCount++;
+                    }
+
+                    $course->averageTime += $item->averageTime;
+                    $course->averageGrade += $item->averageGrade;
+                    $course->gradesCount += $item->gradesCount;
+                }
+
+                $teacher->averageTime += $course->averageTime;
+                $teacher->averageGrade += $course->averageGrade;
+                $teacher->gradesCount += $course->gradesCount;
+            }
+        }
+
+        return $teachers;
+    }
+
+    private function find_average_values(array $teachers)
+    {
+        foreach($teachers as $teacher)
+        {
+            foreach($teacher->courses as $course)
+            {
+                foreach($course->items as $item)
+                {
+                    $item->averageTime /= $item->gradesCount;
+                    $item->averageGrade /= $item->gradesCount;
+                }
+
+                $course->averageTime /= $course->gradesCount;
+                $course->averageGrade /= $course->gradesCount;
+            }
+
+            $teacher->averageTime /= $teacher->gradesCount;
+            $teacher->averageGrade /= $teacher->gradesCount;
+        }
+
+        return $teachers;
+    }
+
+    private function convert_time_into_convenient_format(array $teachers)
+    {
+        foreach($teachers as $teacher)
+        {
+            foreach($teacher->courses as $course)
+            {
+                foreach($course->items as $item)
+                {
+                    $item->averageTimeString = $this->get_time_string($item->averageTime);
+                }
+
+                $course->averageTimeString = $this->get_time_string($course->averageTime);
+            }
+
+            $teacher->averageTimeString = $this->get_time_string($teacher->averageTime);
+        }
+
+        return $teachers;
+    }
+
+    private function get_time_string(int $timestamp) : string
+    {
+        $daysCount = intval($timestamp / self::DAY);
+        $timeLeft = $timestamp % self::DAY;
+
+        $hoursCount = intval($timeLeft / self::HOUR);
+        $timeLeft = $timeLeft % self::HOUR;
+
+        $minutesCount = intval($timeLeft / self::MINUTE);
+        $timeLeft = $timeLeft % self::MINUTE;
+
+        $secondsCount = $timeLeft;
+
+        $str = '';
+
+        if(!empty($daysCount))
+        {
+            $str.= $daysCount.' '.get_string('days', 'report_averagechecktime').' ';
+        }
+        
+        if(!empty($hoursCount))
+        {
+            $str.= $hoursCount.' '.get_string('hours', 'report_averagechecktime').' ';
+        }
+
+        if(!empty($minutesCount))
+        {
+            $str.= $minutesCount.' '.get_string('minutes', 'report_averagechecktime').' ';
+        }
+
+        if(!empty($secondsCount))
+        {
+            $str.= $secondsCount.' '.get_string('seconds', 'report_averagechecktime').' ';
+        }
+
+        return $str;
     }
 
 

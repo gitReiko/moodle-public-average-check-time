@@ -35,7 +35,8 @@ class PageBuilder
 
     private function get_teacher(\stdClass $teacher) : string 
     {
-        $page = \html_writer::tag('li', $teacher->name);
+        $text = $teacher->name.' '.$teacher->averageTimeString.' '.round($teacher->averageGrade, 2);
+        $page = \html_writer::tag('li', $text);
 
         $page.= \html_writer::start_tag('ol');
 
@@ -51,7 +52,8 @@ class PageBuilder
 
     private function get_course(\stdClass $course) : string 
     {
-        $page = \html_writer::tag('li', $course->name);
+        $text = $course->name.' '.$course->averageTimeString.' '.round($course->averageGrade, 2);
+        $page = \html_writer::tag('li', $text);
 
         $page.= \html_writer::start_tag('ol');
 
@@ -67,7 +69,8 @@ class PageBuilder
 
     private function get_item(\stdClass $item) : string 
     {
-        $page = \html_writer::tag('li', $item->name);
+        $text = $item->name.' '.$item->averageTimeString.' '.round($item->averageGrade, 2);
+        $page = \html_writer::tag('li', $text);
 
         return $page;
     }
