@@ -16,3 +16,8 @@ function toggle_items_rows_visibility(row)
     });
 }
 
+function submit_form(id)
+{
+    document.getElementById(id).submit();
+}
+

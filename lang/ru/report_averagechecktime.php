@@ -10,4 +10,4 @@ $string['teacher'] = 'Преподаватель';
 $string['average_check_time'] = 'Среднее время проверки';
 $string['average_grade'] = 'Средняя оценка';
 $string['more_info_title'] = 'Нажмите, чтобы увидеть больше информации';
-
+$string['sort_title'] = 'Нажмите, чтобы отсортировать данные по столбцу';

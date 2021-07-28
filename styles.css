@@ -2,6 +2,7 @@
 .reportHeader
 {
     cursor: default;
+    padding-bottom: 15px;
 }
 
 table.averageTable
@@ -19,7 +20,7 @@ table.averageTable tr td
 
 table.averageTable thead tr td
 {
-    cursor: default;
+    cursor: pointer;
     text-align: center;
     background: #f6e1a9;
 }

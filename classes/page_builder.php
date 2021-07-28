@@ -4,13 +4,17 @@ namespace Report\AverageCheckTime;
 
 class PageBuilder 
 {
+    const _FORM = '_form';
+
     const TEACHER_ID = 'teacher_id_';
     const COURSE_ID = 'course_id_';
 
+    private $sortType;
     private $teachers;
 
-    function __construct($teachers)
+    function __construct($sortType, $teachers)
     {
+        $this->sortType = $sortType;
         $this->teachers = $teachers;
     }
 
@@ -18,6 +22,7 @@ class PageBuilder
     {
         $page = $this->get_page_header();
         $page.= $this->get_teachers_table();
+        $page.= $this->get_sort_forms();
 
         return $page;
     }
@@ -42,20 +47,38 @@ class PageBuilder
 
     private function get_teacher_table_header() : string 
     {
-
+        $sortBy = Main::SORT_BY_NAME;
         $text = get_string('teacher', 'report_averagechecktime');
-        $str = \html_writer::tag('td', $text);
+        $str = $this->get_column_header($sortBy, $text);
 
+        $sortBy = Main::SORT_BY_GRADE;
         $text = get_string('average_grade', 'report_averagechecktime');
-        $str.= \html_writer::tag('td', $text);
+        $str.= $this->get_column_header($sortBy, $text);
 
+        $sortBy = Main::SORT_BY_TIME;
         $text = get_string('average_check_time', 'report_averagechecktime');
-        $str.= \html_writer::tag('td', $text);
+        $str.= $this->get_column_header($sortBy, $text);
 
         $str = \html_writer::tag('tr', $str);
         $str = \html_writer::tag('thead', $str);
 
         return $str; 
+    }
+
+    private function get_column_header(string $sortBy, string $text) : string 
+    {
+        $attr = array(
+            'onclick' => 'submit_form(`'.$sortBy.self::_FORM.'`)',
+            'title' => get_string('sort_title', 'report_averagechecktime')
+        );
+
+        $str = $text;
+        if($this->sortType == $sortBy)
+        {
+            $str.= '↓';
+        }
+
+        return \html_writer::tag('td', $str, $attr);
     }
 
     private function get_teacher_table_body() : string 
@@ -181,6 +204,32 @@ class PageBuilder
         $str.= \html_writer::end_tag('tr');
 
         return $str;
+    }
+
+    private function get_sort_forms() : string 
+    {
+        $forms = $this->get_sort_by_grade_form(Main::SORT_BY_NAME);
+        $forms.= $this->get_sort_by_grade_form(Main::SORT_BY_GRADE);
+        $forms.= $this->get_sort_by_grade_form(Main::SORT_BY_TIME);
+
+        return $forms;
+    }
+
+    private function get_sort_by_grade_form(string $sortType) : string 
+    {
+        $attr = array(
+            'type' => 'hidden',
+            'name' => Main::SORT_TYPE,
+            'value' => $sortType
+        );
+        $params = \html_writer::empty_tag('input', $attr);
+
+        $attr = array(
+            'method' => 'post',
+            'id' => $sortType.self::_FORM,
+            'class' => 'hidden'
+        );
+        return \html_writer::tag('form', $params, $attr);
     }
 
 }

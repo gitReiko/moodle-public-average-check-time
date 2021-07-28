@@ -10,20 +10,33 @@ class DataGetter
     const HOUR = 3600;
     const MINUTE = 60;
 
+    private $sortType;
     private $rawGrades;
     private $teachers;
 
     function __construct()
     {
+        $this->sortType = $this->get_sort_type_from_request();
         $this->rawGrades = $this->get_raw_grades();
         $this->teachers = $this->parse_raw_grades();
         $this->teachers = $this->calculate_averages($this->teachers);
         $this->teachers = $this->convert_time_into_convenient_format($this->teachers);
+        $this->teachers = $this->sort_teachers_by($this->teachers);
+    }
+
+    public function get_sort_type()
+    {
+        return $this->sortType;
     }
 
     public function get_teachers()
     {
         return $this->teachers;
+    }
+
+    private function get_sort_type_from_request() : string 
+    {
+        return optional_param(Main::SORT_TYPE, Main::SORT_BY_NAME, PARAM_TEXT);
     }
 
     private function get_raw_grades() 
@@ -67,8 +80,6 @@ class DataGetter
                 $teachers = $this->add_teacher($teachers, $rawGrade);
             }
         }
-
-        usort($teachers, function($a,$b) { return strcmp($a->name, $b->name); });
 
         return $teachers;
     }
@@ -348,6 +359,35 @@ class DataGetter
         }
 
         return $str;
+    }
+
+    private function sort_teachers_by(array $teachers)
+    {
+        if($this->sortType === Main::SORT_BY_NAME)
+        {
+            usort($teachers, function($a,$b) 
+            { 
+                return strcmp($a->name, $b->name); 
+            });
+        }
+        else if($this->sortType === Main::SORT_BY_GRADE)
+        {
+            usort($teachers, function($a,$b) 
+            {
+                if ($a->averageGrade == $b->averageGrade) return 0;
+                return ($a->averageGrade < $b->averageGrade) ? 1 : -1;
+            });  
+        }
+        else if($this->sortType === Main::SORT_BY_TIME)
+        {
+            usort($teachers, function($a,$b) 
+            {
+                if ($a->averageTime == $b->averageTime) return 0;
+                return ($a->averageTime < $b->averageTime) ? 1 : -1;
+            });  
+        }
+        
+        return $teachers;
     }
 
 
