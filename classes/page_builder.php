@@ -103,6 +103,10 @@ class PageBuilder
         $text = get_string('teacher', 'report_averagechecktime');
         $str = $this->get_column_header($sortBy, $text);
 
+        $attr = array('style' => 'cursor:default');
+        $text = get_string('module', 'report_averagechecktime');
+        $str.= \html_writer::tag('td', $text, $attr);
+
         $sortBy = Main::SORT_BY_GRADE;
         $text = get_string('average_grade', 'report_averagechecktime');
         $str.= $this->get_column_header($sortBy, $text);
@@ -162,6 +166,9 @@ class PageBuilder
         $text = $teacherNumber.'. '.$teacher->name;
         $str.= \html_writer::tag('td', $text);
 
+        // Module cell
+        $str.= \html_writer::tag('td', '');
+
         $attr = array('class' => 'tac');
         $text = round($teacher->averageGrade, 2);
         $str.= \html_writer::tag('td', $text, $attr);
@@ -205,6 +212,9 @@ class PageBuilder
         $text = $courseNumber.'. '.$course->name;
         $str.= \html_writer::tag('td', $text, $attr);
 
+        // Module cell
+        $str.= \html_writer::tag('td', '');
+
         $attr = array('class' => 'tac');
         $text = round($course->averageGrade, 2);
         $str.= \html_writer::tag('td', $text, $attr);
@@ -245,6 +255,10 @@ class PageBuilder
         $attr = array('style' => 'padding-left:50px');
         $text = $itemNumber.'. '.$item->name;
         $str.= \html_writer::tag('td', $text, $attr);
+
+        // Module cell
+        $attr = array('class' => 'tac');
+        $str.= \html_writer::tag('td', $item->module, $attr);
 
         $attr = array('class' => 'tac');
         $text = round($item->averageGrade, 2);

@@ -7,6 +7,7 @@ $string['hours'] = 'h.';
 $string['minutes'] = 'min.';
 $string['seconds'] = 's.';
 $string['teacher'] = 'Teacher';
+$string['module'] = 'Module';
 $string['average_check_time'] = 'Average check time';
 $string['average_grade'] = 'Average grade';
 $string['more_info_title'] = 'Click to see more information';
