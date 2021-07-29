@@ -62,8 +62,22 @@ class PageBuilder
         $text = get_string('known_distortions', 'report_averagechecktime');
         $str = \html_writer::tag('p', $text);
 
+        $text = get_string('distortion_1', 'report_averagechecktime');
+        $li = \html_writer::tag('li', $text);
+        $text = get_string('distortion_2', 'report_averagechecktime');
+        $li.= \html_writer::tag('li', $text);
+        $text = get_string('distortion_3', 'report_averagechecktime');
+        $li.= \html_writer::tag('li', $text);
+        $text = get_string('distortion_4', 'report_averagechecktime');
+        $li.= \html_writer::tag('li', $text);
+        $text = get_string('distortion_5', 'report_averagechecktime');
+        $li.= \html_writer::tag('li', $text);
+        $text = get_string('distortion_6', 'report_averagechecktime');
+        $li.= \html_writer::tag('li', $text);
+        $text = get_string('distortion_7', 'report_averagechecktime');
+        $li.= \html_writer::tag('li', $text);
 
-
+        $str.= \html_writer::tag('ol', $li);
 
         $attr = array(
             'id' => 'warningBox',
