@@ -2,6 +2,7 @@
 
 require_once '../../config.php';
 require_once 'classes/main.php';
+require_once($CFG->libdir.'/adminlib.php');
 
 use Report\AverageCheckTime\Main as main;
 
@@ -16,6 +17,7 @@ $PAGE->requires->css('/report/averagechecktime/styles.css');
 $PAGE->requires->js('/report/averagechecktime/script.js');
 
 require_login();
+admin_externalpage_setup('reportaveragechecktime', '', null, '', array('pagelayout'=>'report'));
   
 echo $OUTPUT->header();
 
