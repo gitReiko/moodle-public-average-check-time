@@ -21,5 +21,6 @@ $string['distortion_4'] = 'Unchecked works are not counted;';
 $string['distortion_5'] = 'If another teacher checks for a long time an uncheckable work, then the check will worsen the performance of this "another" teacher;';
 $string['distortion_6'] = 'A small number of works checked very late can introduce significant distortion;';
 $string['distortion_7'] = 'Rechecking will be bad for the indicators, since the starting date will be the first date of sending for verification;';
-
-
+$string['period_from'] = 'Data for the period from';
+$string['to'] = 'to';
+$string['apply'] = 'Apply';

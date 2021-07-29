@@ -2,7 +2,6 @@
 
 require_once '../../config.php';
 require_once 'classes/main.php';
-//require_once 'enums.php';
 
 use Report\AverageCheckTime\Main as main;
 

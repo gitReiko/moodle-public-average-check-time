@@ -5,16 +5,21 @@ namespace Report\AverageCheckTime;
 class PageBuilder 
 {
     const _FORM = '_form';
+    const PERIOD_FORM = 'period_form';
 
     const TEACHER_ID = 'teacher_id_';
     const COURSE_ID = 'course_id_';
 
     private $sortType;
+    private $fromDate;
+    private $toDate;
     private $teachers;
 
-    function __construct($sortType, $teachers)
+    function __construct(string $sortType, string $fromDate, string $toDate, $teachers)
     {
         $this->sortType = $sortType;
+        $this->fromDate = $fromDate;
+        $this->toDate = $toDate;
         $this->teachers = $teachers;
     }
 
@@ -22,8 +27,9 @@ class PageBuilder
     {
         $page = $this->get_page_header();
         $page.= $this->get_warning();
+        $page.= $this->get_period_box();
         $page.= $this->get_teachers_table();
-        $page.= $this->get_sort_forms();
+        $page.= $this->get_forms();
 
         return $page;
     }
@@ -53,6 +59,7 @@ class PageBuilder
             'onclick' => 'toggle_warning()'
         );
         $text = get_string('warning_toggle', 'report_averagechecktime');
+
         
         return \html_writer::tag('p', $text, $attr);
     }
@@ -84,6 +91,55 @@ class PageBuilder
             'class' => 'hidden'
         );
         return \html_writer::tag('div', $str, $attr);
+    }
+
+    private function get_period_box() : string 
+    {
+        $text = get_string('period_from', 'report_averagechecktime').' ';
+        $text.= $this->get_from_date().' ';
+        $text.= get_string('to', 'report_averagechecktime').' ';
+        $text.= $this->get_to_date();
+        $text.= $this->get_apply_button();
+
+        $str = \html_writer::tag('p', $text);
+
+        return $str;
+    }
+
+    private function get_from_date() : string 
+    {
+        $attr = array(
+            'id' => Main::FROM_DATE,
+            'type' => 'date',
+            'name' => Main::FROM_DATE,
+            'value' => $this->fromDate
+        );
+        return \html_writer::empty_tag('input', $attr);
+    }
+
+    private function get_to_date() : string 
+    {
+        $attr = array(
+            'id' => Main::TO_DATE,
+            'type' => 'date',
+            'name' => Main::TO_DATE,
+            'value' => $this->toDate
+        );
+        return \html_writer::empty_tag('input', $attr);
+    }
+
+    private function get_apply_button() : string 
+    {
+        $attr = array(
+            'id' => 'apply_button',
+            'type' => 'submit',
+            'name' => 'submit_btn',
+            'value' => get_string('apply', 'report_averagechecktime'),
+            'onclick' => 'add_periods_and_submit_form(`'.self::PERIOD_FORM.'`)'
+        );
+        $str = \html_writer::empty_tag('input', $attr);
+
+        return $str;
     }
 
     private function get_teachers_table() : string 
@@ -124,7 +180,7 @@ class PageBuilder
     private function get_column_header(string $sortBy, string $text) : string 
     {
         $attr = array(
-            'onclick' => 'submit_form(`'.$sortBy.self::_FORM.'`)',
+            'onclick' => 'add_periods_and_submit_form(`'.$sortBy.self::_FORM.'`)',
             'title' => get_string('sort_title', 'report_averagechecktime')
         );
 
@@ -272,11 +328,12 @@ class PageBuilder
         return $str;
     }
 
-    private function get_sort_forms() : string 
+    private function get_forms() : string 
     {
         $forms = $this->get_sort_by_grade_form(Main::SORT_BY_NAME);
         $forms.= $this->get_sort_by_grade_form(Main::SORT_BY_GRADE);
         $forms.= $this->get_sort_by_grade_form(Main::SORT_BY_TIME);
+        $forms.= $this->get_period_form();
 
         return $forms;
     }
@@ -293,6 +350,23 @@ class PageBuilder
         $attr = array(
             'method' => 'post',
             'id' => $sortType.self::_FORM,
+            'class' => 'hidden'
+        );
+        return \html_writer::tag('form', $params, $attr);
+    }
+
+    private function get_period_form() : string 
+    {
+        $attr = array(
+            'type' => 'hidden',
+            'name' => Main::SORT_TYPE,
+            'value' => $this->sortType
+        );
+        $params = \html_writer::empty_tag('input', $attr);
+
+        $attr = array(
+            'method' => 'post',
+            'id' => self::PERIOD_FORM,
             'class' => 'hidden'
         );
         return \html_writer::tag('form', $params, $attr);

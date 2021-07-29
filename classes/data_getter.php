@@ -11,12 +11,16 @@ class DataGetter
     const MINUTE = 60;
 
     private $sortType;
+    private $fromDate;
+    private $toDate;
     private $rawGrades;
     private $teachers;
 
     function __construct()
     {
         $this->sortType = $this->get_sort_type_from_request();
+        $this->fromDate = $this->get_from_date_from_request();
+        $this->toDate = $this->get_to_date_from_request();
         $this->rawGrades = $this->get_raw_grades();
         $this->teachers = $this->parse_raw_grades();
         $this->teachers = $this->calculate_averages($this->teachers);
@@ -29,6 +33,16 @@ class DataGetter
         return $this->sortType;
     }
 
+    public function get_from_date() 
+    {
+        return $this->fromDate;
+    }
+
+    public function get_to_date() 
+    {
+        return $this->toDate;
+    }
+
     public function get_teachers()
     {
         return $this->teachers;
@@ -37,6 +51,55 @@ class DataGetter
     private function get_sort_type_from_request() : string 
     {
         return optional_param(Main::SORT_TYPE, Main::SORT_BY_NAME, PARAM_TEXT);
+    }
+
+    private function get_from_date_from_request() : string 
+    {
+        $date = optional_param(Main::FROM_DATE, null, PARAM_TEXT);
+
+        if($date)
+        {
+            return $date;
+        }
+        else 
+        {
+            if($this->get_current_month_number() >= 9) $month = '09';
+            else $month = '02'; 
+    
+            $year = date('Y', time());
+    
+            return $year.'-'.$month.'-01';
+        }
+    }
+
+    private function get_to_date_from_request() : string 
+    {
+        $date = optional_param(Main::TO_DATE, null, PARAM_TEXT);
+
+        if($date)
+        {
+            return $date;
+        }
+        else 
+        {
+            if($this->get_current_month_number() >= 9) 
+            {
+                $month = '02';
+                $year = date('Y', time()) + 1;
+            }
+            else 
+            {
+                $month = '09';
+                $year = date('Y', time());
+            }
+    
+            return $year.'-'.$month.'-01';
+        }
+    }
+
+    private function get_current_month_number() : int 
+    {
+        return date('n', time());
     }
 
     private function get_raw_grades() 
@@ -58,9 +121,12 @@ class DataGetter
                 AND gg.timecreated <> gg.timemodified
                 AND gg.usermodified IS NOT NULL
                 AND gg.finalgrade IS NOT NULL
-                AND gg.timecreated IS NOT NULL
+                AND gg.timecreated IS NOT NULL 
+                AND gg.timecreated >= ?
+                AND gg.timemodified <= ?
         ';
-        $params = array();
+
+        $params = array(strtotime($this->fromDate), strtotime($this->toDate));
 
         return $DB->get_records_sql($sql, $params);
     }
